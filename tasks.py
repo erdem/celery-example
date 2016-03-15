@@ -4,17 +4,15 @@ import Image
 from celery.task import task
 from constants import THUMBNAIL_SIZES, THUMBNAILS_DIRECTORY
 
+# Every celery task function must be annotated with a celery task decorator.
+# "@task" decorator registered function to celery
 
-@task(name="thumbnail_generater")
-def thumbnail_generater(image_path, image_name):
+
+@task(name="thumbnail_generator")
+def thumbnail_generator(image_path, image_name):
     for thumbnail_size in THUMBNAIL_SIZES:
         thumbnail_folder_name = "%sx%s/" % thumbnail_size
         thumbnail_directory = THUMBNAILS_DIRECTORY + thumbnail_folder_name
-
-        try:
-            os.makedirs(thumbnail_directory)
-        except OSError:
-            pass
 
         thumbnail_data = {
             "image_name": os.path.splitext(image_name)[0],
